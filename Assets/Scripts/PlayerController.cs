@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public GameObject playerBody;
     public GameObject playerPieces;
 
+    public CameraShake cameraShake;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -83,5 +85,9 @@ public class PlayerController : MonoBehaviour
         playerBody.SetActive(false);
         
         UIManager.Instance.OpenFailImage();
+        
+        cameraShake.ShakeCamera();
+        
+        StartCoroutine(UIManager.Instance.OpenRestartButton());
     }
 }

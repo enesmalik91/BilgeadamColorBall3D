@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image failImage;
     [SerializeField] private float failImageDuration;
 
+    [SerializeField] private GameObject restartButton;
+
     private void Awake()
     {
         Instance = this;
@@ -20,5 +22,12 @@ public class UIManager : MonoBehaviour
     public void OpenFailImage()
     {
         failImage.DOFade(1, failImageDuration).OnComplete((() => failImage.DOFade(0, failImageDuration)));
+    }
+
+    public IEnumerator OpenRestartButton()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        restartButton.SetActive(true);
     }
 }
