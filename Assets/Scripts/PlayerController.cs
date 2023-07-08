@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class PlayerController : MonoBehaviour
 
     private Touch _touch;
 
+    public bool isFinish;
+
+    public GameObject playerBody;
+    public GameObject playerPieces;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -20,6 +26,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if(isFinish) return;
+        
         MoveForward();
 
         if (Input.touchCount > 0)
@@ -38,9 +46,20 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Debug.Log("Obctacle Collsion");
+            CollisionObstacle();
+        }
+    }
 
     private void FixedUpdate()
     {
+        if(isFinish) return;
+        
         MoveWithRigidbody();
     }
 
@@ -53,5 +72,16 @@ public class PlayerController : MonoBehaviour
     private void MoveWithRigidbody()
     {
         _rigidbody.velocity = _direction * (moveSpeedVelocity * Time.fixedDeltaTime);
+    }
+
+    private void CollisionObstacle()
+    {
+        isFinish = true;
+        _rigidbody.velocity = Vector3.zero;
+        
+        playerPieces.SetActive(true);
+        playerBody.SetActive(false);
+        
+        UIManager.Instance.OpenFailImage();
     }
 }

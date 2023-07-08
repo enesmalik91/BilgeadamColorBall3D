@@ -30,6 +30,8 @@ public class PlayerClamp : MonoBehaviour
 
     private void MoveZPos()
     {
+        if(playerController.isFinish) return;
+        
         zBackOffset += playerController.forwardSpeed * Time.deltaTime;
         zForwardOffset += playerController.forwardSpeed * Time.deltaTime;
     }
