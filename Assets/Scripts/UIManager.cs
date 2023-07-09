@@ -14,6 +14,13 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject restartButton;
 
+    [Header("Complete Settings")] 
+    [SerializeField] private GameObject completePanel;
+
+    [SerializeField] private GameObject radialParent;
+    [SerializeField] private GameObject nextButton;
+    
+
     private void Awake()
     {
         Instance = this;
@@ -29,5 +36,15 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         
         restartButton.SetActive(true);
+    }
+
+    public IEnumerator OpenCompletePanel()
+    {
+        yield return new WaitForSeconds(0.1f);
+        completePanel.SetActive(true);
+        yield return new WaitForSeconds(0.7f);
+        radialParent.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        nextButton.SetActive(true);
     }
 }

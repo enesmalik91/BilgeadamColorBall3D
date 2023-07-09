@@ -14,8 +14,6 @@ public class PlayerController : MonoBehaviour
 
     private Touch _touch;
 
-    public bool isFinish;
-
     public GameObject playerBody;
     public GameObject playerPieces;
 
@@ -28,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if(isFinish) return;
+        if(GameManager.Instance.isFinish) return;
         
         MoveForward();
 
@@ -60,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(isFinish) return;
+        if(GameManager.Instance.isFinish) return;
         
         MoveWithRigidbody();
     }
@@ -78,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
     private void CollisionObstacle()
     {
-        isFinish = true;
+        GameManager.Instance.isFinish = true;
         _rigidbody.velocity = Vector3.zero;
         
         playerPieces.SetActive(true);
