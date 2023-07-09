@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,11 +19,25 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject radialParent;
     [SerializeField] private GameObject nextButton;
+    [SerializeField] private TMP_Text currentCoinText;
+
+    [Header("Total Coin")] 
+    [SerializeField] private string coinPref;
+    [SerializeField] private TMP_Text totalCoinText;
+    [SerializeField] private int currentCoin;
+
+    [Header("Tap To Start")] 
+    [SerializeField] private GameObject tapToStartParent;
     
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        totalCoinText.text = PlayerPrefs.GetInt(coinPref, 0).ToString();
     }
 
     public void OpenFailImage()
@@ -43,8 +57,21 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         completePanel.SetActive(true);
         yield return new WaitForSeconds(0.7f);
+        currentCoinText.text = "+" + currentCoin;
         radialParent.SetActive(true);
         yield return new WaitForSeconds(2f);
         nextButton.SetActive(true);
+    }
+
+    public void IncreaseCoin()
+    {
+        currentCoin++;
+        PlayerPrefs.SetInt(coinPref, PlayerPrefs.GetInt(coinPref) + 1);
+        totalCoinText.text = PlayerPrefs.GetInt(coinPref, 0).ToString();
+    }
+
+    public void CloseTopToStart()
+    {
+        tapToStartParent.SetActive(false);
     }
 }

@@ -22,6 +22,12 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        cameraShake = FindObjectOfType<CameraShake>();
+    }
+
+    private void Start()
+    {
+        cameraTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
     }
 
     private void Update()
@@ -33,7 +39,13 @@ public class PlayerController : MonoBehaviour
         if (Input.touchCount > 0)
         {
             _touch = Input.GetTouch(0);
-
+            
+            if (_touch.phase == TouchPhase.Began)
+            {
+                if(GameManager.Instance.isStart) return;
+                GameManager.Instance.isStart = true;
+                UIManager.Instance.CloseTopToStart();
+            }
             if (_touch.phase == TouchPhase.Moved)
             {
                 _direction = new Vector3(_touch.deltaPosition.x, 0, _touch.deltaPosition.y);
@@ -58,13 +70,15 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(GameManager.Instance.isFinish) return;
+        if(GameManager.Instance.isFinish || !GameManager.Instance.isStart) return;
         
         MoveWithRigidbody();
     }
 
     private void MoveForward()
     {
+        if(!GameManager.Instance.isStart) return;
+
         transform.position += transform.forward * (forwardSpeed * Time.deltaTime);
         cameraTransform.position += Vector3.forward * (forwardSpeed * Time.deltaTime);
     }
