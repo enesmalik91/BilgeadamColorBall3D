@@ -9,6 +9,7 @@ public class CoinCounter : MonoBehaviour
     {
         if (other.CompareTag("Collectable"))
         {
+            Debug.Log("Collectable");
             UIManager.Instance.IncreaseCoin();
         }
     }
